@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Our Community - Lunaria Client</title>
+    <meta name="description" content="Connect with other players, get support, and stay updated with the latest news">
+    <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-2xoSaLotHVzHQbDXVjoWDVW20DTJm8.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', system-ui, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .font-lunaria {
+            font-family: 'Audiowide', system-ui, sans-serif;
+        }
+
+        .animated-gradient {
+            background: rgb(0, 0, 0);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-back:hover {
+            color: #ffffff;
+        }
+
+        .arrow-left {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Content */
+        .content-wrapper {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 1rem 4rem;
+        }
+
+        /* Animated background elements */
+        .bg-glow {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        .glow-orb-1 {
+            top: 25%;
+            left: 25%;
+            width: 384px;
+            height: 384px;
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        .glow-orb-2 {
+            bottom: 25%;
+            right: 25%;
+            width: 384px;
+            height: 384px;
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 10;
+            max-width: 64rem;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.75rem);
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .page-title .highlight {
+            color: #9b7fd9;
+        }
+
+        .page-description {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .community-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s;
+            animation: fade-in-up 0.8s ease-out forwards;
+        }
+
+        .community-card:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            transform: scale(1.02);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .users-icon {
+            width: 32px;
+            height: 32px;
+            color: #9b7fd9;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .card-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            background: #a855f7;
+            color: #ffffff;
+        }
+
+        .btn:hover {
+            background: #9333ea;
+            transform: scale(1.05);
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hide v0 branding */
+        [data-v0-badge],
+        [data-v0-branding],
+        [class*="v0-badge"],
+        [class*="v0-branding"],
+        [class*="built-with"],
+        [class*="BuiltWith"],
+        [id*="v0-badge"],
+        [id*="v0-branding"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <main class="animated-gradient">
+        <!-- Navigation -->
+        <nav>
+            <div class="nav-container">
+                <a href="index.html" class="nav-back">
+                    <svg class="arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+            <!-- Animated background elements -->
+            <div class="bg-glow">
+                <div class="glow-orb glow-orb-1"></div>
+                <div class="glow-orb glow-orb-2"></div>
+            </div>
+
+            <div class="content-container">
+                <div class="header-section">
+                    <h1 class="page-title">
+                        Join Our <span class="highlight">Community</span>
+                    </h1>
+                    <p class="page-description">
+                        Connect with other players, get support, and stay updated with the latest news
+                    </p>
+                </div>
+
+                <div class="cards-grid">
+                    <!-- HitsOnly Community -->
+                    <div class="community-card">
+                        <div class="card-header">
+                            <svg class="users-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <h2 class="card-title">HitsOnly</h2>
+                        </div>
+                        <p class="card-description">
+                            Join HitsOnly's community server for general discussions, support, and connecting with other players.
+                        </p>
+                        <a href="https://discord.gg/hitsonly" target="_blank" rel="noopener noreferrer" class="btn">
+                            Join HitsOnly
+                        </a>
+                    </div>
+
+                    <!-- Lunaria Community -->
+                    <div class="community-card">
+                        <div class="card-header">
+                            <svg class="users-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <h2 class="card-title">Lunaria</h2>
+                        </div>
+                        <p class="card-description">
+                            The official Lunaria server for updates, announcements, and dedicated support for the client.
+                        </p>
+                        <a href="https://discord.gg/RSEaTwDdEu" target="_blank" rel="noopener noreferrer" class="btn">
+                            Join Lunaria
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
