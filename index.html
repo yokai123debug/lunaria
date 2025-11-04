@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lunaria Client - The Ultimate Ghost Client</title>
     <meta name="description" content="Fully undetectable Minecraft ghost client for 1.21+">
-    <!-- Updated favicon to use direct blob URL -->
     <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-2xoSaLotHVzHQbDXVjoWDVW20DTJm8.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,10 +28,40 @@
             font-family: 'Audiowide', system-ui, sans-serif;
         }
 
-        /* Animated gradient background */
+        /* Added animated starfield background */
         .animated-gradient {
-            background: rgb(0, 0, 0);
+            background: #000000;
             min-height: 100vh;
+            position: relative;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Added cursor trail effect */
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(155, 127, 217, 0.8), transparent);
+            pointer-events: none;
+            z-index: 9998;
+            animation: fade-out 0.8s ease-out forwards;
+        }
+
+        @keyframes fade-out {
+            to {
+                opacity: 0;
+                transform: scale(2);
+            }
         }
 
         /* Navigation */
@@ -45,6 +74,19 @@
             padding: 1.5rem;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(12px);
+            /* Added smooth slide-in animation */
+            animation: slide-down 0.6s ease-out;
+        }
+
+        @keyframes slide-down {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .nav-container {
@@ -59,7 +101,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            transition: all 0.5s;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-logo.hidden {
@@ -72,12 +114,17 @@
             width: 40px;
             height: 40px;
             border-radius: 0.5rem;
+            /* Added image hover effect */
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover img {
+            transform: rotate(360deg) scale(1.1);
         }
 
         .nav-logo span {
             font-size: 1.5rem;
             font-weight: bold;
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
             text-shadow: 0 0 20px rgba(155, 127, 217, 0.8), 0 0 40px rgba(155, 127, 217, 0.5);
         }
@@ -91,11 +138,28 @@
         .nav-links a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Added underline hover effect */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #9b7fd9;
+            transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
             color: #ffffff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-buttons {
@@ -112,10 +176,31 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             border: none;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Added ripple effect on buttons */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-outline {
@@ -127,7 +212,8 @@
         .btn-outline:hover {
             background: rgba(168, 85, 247, 0.1);
             border-color: #a855f7;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
         }
 
         .btn-primary {
@@ -138,7 +224,8 @@
 
         .btn-primary:hover {
             background: #9333ea;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.6);
         }
 
         /* Hero Section */
@@ -151,6 +238,7 @@
             justify-content: center;
             padding: 8rem 1rem 4rem;
             overflow: visible;
+            z-index: 2;
         }
 
         .hero-bg {
@@ -216,9 +304,19 @@
         .hero-title-main {
             font-size: clamp(3rem, 12vw, 12rem);
             display: block;
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
             text-shadow: 0 0 20px rgba(155, 127, 217, 0.8), 0 0 40px rgba(155, 127, 217, 0.5);
+            /* Added text animation */
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(155, 127, 217, 0.8), 0 0 40px rgba(155, 127, 217, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 30px rgba(155, 127, 217, 1), 0 0 60px rgba(155, 127, 217, 0.8);
+            }
         }
 
         .hero-title-sub {
@@ -261,7 +359,6 @@
         .arrow-down {
             width: 24px;
             height: 24px;
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
         }
 
@@ -269,6 +366,7 @@
         section {
             padding: 6rem 1rem;
             position: relative;
+            z-index: 2;
         }
 
         .section-container {
@@ -293,7 +391,6 @@
         }
 
         .section-title .highlight {
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
             text-shadow: 0 0 20px rgba(155, 127, 217, 0.8), 0 0 40px rgba(155, 127, 217, 0.5);
         }
@@ -329,18 +426,21 @@
             border-radius: 0.75rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(168, 85, 247, 0.2);
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Added 3D transform effect */
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .card:hover {
             border-color: rgba(192, 132, 252, 0.5);
-            transform: scale(1.05);
+            transform: translateY(-8px) rotateX(2deg);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
         }
 
         .card-title {
             font-size: 1.25rem;
             font-weight: bold;
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
             margin-bottom: 0.75rem;
             text-transform: uppercase;
@@ -356,7 +456,32 @@
         .card-list li {
             margin-bottom: 0.375rem;
             font-size: 0.875rem;
+            /* Added list item animation */
+            opacity: 0;
+            animation: fade-in-left 0.5s ease-out forwards;
         }
+
+        .card:hover .card-list li {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes fade-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card-list li:nth-child(1) { animation-delay: 0.1s; }
+        .card-list li:nth-child(2) { animation-delay: 0.15s; }
+        .card-list li:nth-child(3) { animation-delay: 0.2s; }
+        .card-list li:nth-child(4) { animation-delay: 0.25s; }
+        .card-list li:nth-child(5) { animation-delay: 0.3s; }
+        .card-list li:nth-child(6) { animation-delay: 0.35s; }
 
         .card-text {
             font-size: 0.875rem;
@@ -401,12 +526,13 @@
             border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 1rem;
             padding: 2rem;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .pricing-card:hover .pricing-card-content {
             border-color: rgba(168, 85, 247, 0.5);
-            transform: scale(1.05);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4);
         }
 
         .pricing-header {
@@ -431,12 +557,10 @@
         .pricing-price {
             font-size: 3rem;
             font-weight: bold;
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
         }
 
         .pricing-currency {
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
         }
 
@@ -450,12 +574,21 @@
             align-items: flex-start;
             gap: 0.75rem;
             margin-bottom: 1rem;
+            /* Added feature animation */
+            opacity: 0;
+            animation: fade-in-up 0.5s ease-out forwards;
         }
+
+        .pricing-feature:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-feature:nth-child(2) { animation-delay: 0.2s; }
+        .pricing-feature:nth-child(3) { animation-delay: 0.3s; }
+        .pricing-feature:nth-child(4) { animation-delay: 0.4s; }
+        .pricing-feature:nth-child(5) { animation-delay: 0.5s; }
+        .pricing-feature:nth-child(6) { animation-delay: 0.6s; }
 
         .check-icon {
             width: 20px;
             height: 20px;
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
             flex-shrink: 0;
             margin-top: 2px;
@@ -478,13 +611,15 @@
         .btn-gradient:hover {
             background: linear-gradient(to right, #9333ea, #7c3aed);
             box-shadow: 0 10px 25px rgba(168, 85, 247, 0.7);
-            transform: scale(1.05);
+            transform: translateY(-4px);
         }
 
         /* Footer */
         footer {
             border-top: 1px solid rgba(168, 85, 247, 0.2);
             padding: 3rem 1rem;
+            z-index: 2;
+            position: relative;
         }
 
         .footer-container {
@@ -542,12 +677,13 @@
             font-size: 0.875rem;
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .footer-links a:hover {
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
+            padding-left: 8px;
         }
 
         .footer-bottom {
@@ -573,12 +709,12 @@
 
         .footer-social a {
             color: rgba(255, 255, 255, 0.7);
-            transition: color 0.3s;
+            transition: all 0.3s ease;
         }
 
         .footer-social a:hover {
-            /* Changed from pinkish #c8b3e6 to proper purple #9b7fd9 */
             color: #9b7fd9;
+            transform: translateY(-4px);
         }
 
         /* Animations */
@@ -628,6 +764,48 @@
             opacity: 0;
         }
 
+        /* Modal for Broke Nigga Detection */
+        #brokeDetectionModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 1rem;
+            /* Added backdrop blur */
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            position: relative;
+            background: #0a0a0a;
+            border: 2px solid #9b7fd9;
+            border-radius: 1rem;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(155, 127, 217, 0.5);
+            margin: auto;
+            /* Added modal entrance animation */
+            animation: modal-entrance 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modal-entrance {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -636,6 +814,11 @@
 
             .footer-bottom {
                 flex-direction: column;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+                max-height: 95vh;
             }
         }
 
@@ -652,50 +835,17 @@
             visibility: hidden !important;
             opacity: 0 !important;
         }
-
-        /* Modal for Broke Nigga Detection */
-        /* Added modal styling to prevent overflow and center properly */
-        #brokeDetectionModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            position: relative;
-            background: #0a0a0a;
-            border: 2px solid #9b7fd9;
-            border-radius: 1rem;
-            padding: 3rem;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 0 50px rgba(155, 127, 217, 0.5);
-            margin: auto;
-        }
-
-        @media (max-width: 768px) {
-            .modal-content {
-                padding: 2rem 1.5rem;
-                max-height: 95vh;
-            }
-        }
     </style>
 </head>
 <body>
+    <!-- Added starfield canvas -->
+    <canvas id="starfield"></canvas>
+
     <main class="animated-gradient">
         <!-- Navigation -->
         <nav>
             <div class="nav-container">
                 <div class="nav-logo hidden" id="navLogo">
-                    <!-- Updated logo to use direct blob URL -->
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-2xoSaLotHVzHQbDXVjoWDVW20DTJm8.png" alt="Lunaria">
                     <span class="font-lunaria">Lunaria</span>
                 </div>
@@ -704,7 +854,6 @@
                     <a href="#download">Download</a>
                 </div>
                 <div class="nav-buttons">
-                    <!-- Updated link to point to community.html -->
                     <a href="community.html" class="btn btn-outline">Join Community</a>
                     <a href="#download" class="btn btn-primary">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -872,7 +1021,6 @@
             <div class="section-container">
                 <div class="section-header">
                     <h2 class="section-title">Get Started Today</h2>
-                    <!-- Changed color from pinkish #c8b3e6 to proper purple #9b7fd9 -->
                     <p class="section-description" style="color: #9b7fd9;">
                         Download Lunaria Client and experience the ultimate ghost client
                     </p>
@@ -940,7 +1088,6 @@
                 <div class="footer-grid">
                     <div>
                         <div class="footer-brand">
-                            <!-- Updated logo to use direct blob URL -->
                             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-2xoSaLotHVzHQbDXVjoWDVW20DTJm8.png" alt="Lunaria Client">
                             <span class="font-lunaria">Lunaria</span>
                         </div>
@@ -986,7 +1133,6 @@
     </main>
 
     <!-- Modal for Broke Nigga Detection -->
-    <!-- Updated modal structure with proper wrapper class -->
     <div id="brokeDetectionModal">
         <div class="modal-content">
             <button id="closeModal" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;">×</button>
@@ -1032,6 +1178,62 @@
     </div>
 
     <script>
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 200;
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+        
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(155, 127, 217, 0.8)';
+            
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+            
+            requestAnimationFrame(animateStars);
+        }
+        
+        animateStars();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                trail.remove();
+            }, 800);
+        });
+
         // Navigation logo visibility on scroll
         window.addEventListener('scroll', function() {
             const navLogo = document.getElementById('navLogo');
@@ -1063,7 +1265,6 @@
             });
         }, observerOptions);
 
-        // Observe all sections with data-section attribute
         document.querySelectorAll('[data-section]').forEach(function(section) {
             observer.observe(section);
         });
@@ -1096,7 +1297,6 @@
         const resultText = document.getElementById('resultText');
         const tryAgainBtn = document.getElementById('tryAgainBtn');
 
-        // Sound effects using Web Audio API
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         
         function playBeep(frequency, duration) {
@@ -1168,11 +1368,10 @@
             let lastProgress = 0;
             
             const scanInterval = setInterval(() => {
-                const increment = Math.floor(Math.random() * 8) + 3; // Random increment between 3-10
+                const increment = Math.floor(Math.random() * 8) + 3;
                 progress += increment;
                 if (progress > 100) progress = 100;
                 
-                // Play beep for each percentage point increase
                 const currentProgress = Math.floor(progress);
                 if (currentProgress > lastProgress) {
                     playBeep(800 + Math.random() * 400, 0.05);
